@@ -1,0 +1,38 @@
+﻿@using LocaFilme.Models
+@model LocaFilme.ViewModels.RandomMovieViewModel
+@{
+    ViewBag.Title = "Random";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h2>@( ((Movie) ViewData["Movie"]).Name )</h2>*@
+
+
+@*
+    Colocando comentarios de multiplas linhas
+*@
+
+@{
+    var className = Model.Customers.Count > 5 ? "popular" : null;
+}
+
+<h2 class="@className">@Model.Movie.Name</h2>
+
+@if (Model.Customers.Count == 0)
+{
+    <text>No one has rented this movie before.</text>
+}
+
+else
+{
+    <ul>
+        @foreach (var customer in Model.Customers)
+        {
+            //Podemos escrever C# code ou HTML dentro desse espaco
+            <li> @customer.Name</li>
+        }
+    </ul>
+}
+
+
+

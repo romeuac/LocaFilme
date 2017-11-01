@@ -1,0 +1,34 @@
+﻿@model IEnumerable<LocaFilme.Models.Customer>
+
+@{
+    ViewBag.Title = "Customers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customers</h2>
+
+<table class="table table-bordered table-hover">
+
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Discount Rate</th>
+            <th>Membership Type</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var customer in @Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(customer.Name, "Details", "Customers", new { id = customer.Id }, null)</td>
+                <td>@customer.MembershipType.DiscountRate%</td>
+                <td>@customer.MembershipType.Name</td>
+            </tr>
+        }
+
+        @*<tr><th>@Html.ActionLink("John Smith", "Details", "Customers", new { givenId = 1 }, null)</th></tr>
+        <tr><th>@Html.ActionLink("Mary Williams", "Details", "Customers", new { givenId = 2 }, null)</th></tr>*@
+    </tbody>
+
+</table>
