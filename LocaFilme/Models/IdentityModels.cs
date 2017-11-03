@@ -22,6 +22,7 @@ namespace LocaFilme.Models
     {
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Movie> Movie { get; set; }
+        public DbSet<MembershipType> MembershipTypes { get; set; } 
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

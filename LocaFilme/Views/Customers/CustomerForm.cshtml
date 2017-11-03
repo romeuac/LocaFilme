@@ -1,0 +1,44 @@
+﻿@*Colocando o Model para ser usado nesta View, neste caso usaremos a ViewModel criada *@
+@model LocaFilme.ViewModels.NewCustomerViewModel
+
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Customer</h2>
+
+@*Tal form chama a acao "Create", que esta no controller*@
+@using (Html.BeginForm("Save", "Customers"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.Name)
+        @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.Birthdate)
+        @Html.TextBoxFor(m => m.Customer.Birthdate, "{0:d MMM yyyy}", new { @class = "form-control" })
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.MembershipTypeId)
+        @Html.DropDownListFor(m => m.Customer.MembershipTypeId, new SelectList(Model.MembershipTypes, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
+    </div>
+
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsletter) Subscribed to newsletter?
+        </label>
+    </div>
+
+    // HIDDEN FIELDS
+
+    @Html.HiddenFor(m => m.Customer.Id);
+
+    //Adicionando o Botao ao Form
+    <button type="submit" class="btn btn-primary"> Save </button>
+
+}
+

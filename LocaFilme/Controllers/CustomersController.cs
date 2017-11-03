@@ -23,6 +23,46 @@ namespace LocaFilme.Controllers
             _context.Dispose();
         }
 
+        public ActionResult New()
+        {
+            var membershipTypes = _context.MembershipTypes.ToList();
+            var viewModel = new NewCustomerViewModel
+            {
+                MembershipTypes = membershipTypes
+            };
+
+            // Criei uma viewModel apenas para agrupar diferentes informacoes a serem enviadas a view... 
+            // Para tanto foi necessario tb criar um novo ViewModel
+            return View("CustomerForm", viewModel);
+        }
+
+        //Utiliza-se o Post para enviar dados para essa Action, nao o Get, para nao ficar aberto...
+        [HttpPost]
+        public ActionResult Save(Customer customer)
+        {
+            // New customer
+            if (customer.Id == 0)
+                _context.Customer.Add(customer);
+
+            // Existing customer - Update
+            else
+            {
+                // A excecao de nao encontrar o customer nao esta sendo tratada
+                var customerInDB = _context.Customer.Single(c => c.Id == customer.Id);
+
+                customerInDB.Name = customer.Name  ;
+                customerInDB.Birthdate = customer.Birthdate  ;
+                customerInDB.MembershipTypeId = customer.MembershipTypeId  ;
+                customerInDB.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter  ;
+            }
+
+            // Para persistir as mudanças no DB
+            _context.SaveChanges();
+
+            // Entao se redireciona para a Actrion do Controller Customers/Index
+            return RedirectToAction("Index", "Customers"); 
+        }
+
         [Route("Customers/Index")]
         public ActionResult Index()
         {
@@ -41,6 +81,27 @@ namespace LocaFilme.Controllers
 
             return View(customer);
             
+        }
+
+        public ActionResult Edit (int id)
+        {
+            // Se o dado customer existe no DB ele sera retornado, caso contrario recebera um null
+            var customer = _context.Customer.SingleOrDefault(c => c.Id == id);
+
+            // Retorna um erro padrao 404 
+            if (customer == null)
+                return HttpNotFound();
+
+            var viewModel = new NewCustomerViewModel
+            {
+                Customer = customer,
+                // Passamos uma lista do Membership Types para o atributo MembershipTypes
+                MembershipTypes = _context.MembershipTypes.ToList()
+            };
+
+            // Colocando o "New" MVC vai procurar por uma View chamada New, Otherwise procuraria por uma chamada Edit
+            return View("CustomerForm", viewModel);
+
         }
 
     
