@@ -98,9 +98,14 @@ namespace LocaFilme.Controllers
         [Route("Movies/Update")]
         public ActionResult Update(int id)
         {
+            Movie Movie = _context.Movie.Single(m => m.Id == id);
+
+            if (Movie == null)
+                return HttpNotFound();
+
             var viewModel = new NewMovieViewModel
             {
-                movie = _context.Movie.Single(m => m.Id == id),
+                movie = Movie,
                 genres = _context.Genres.ToList()
             };
             return View("Edit", viewModel);

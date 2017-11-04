@@ -269,6 +269,10 @@
     <Compile Include="Migrations\201711041225331_OverridingMovieDateAddedToNotNulableNowForReal.Designer.cs">
       <DependentUpon>201711041225331_OverridingMovieDateAddedToNotNulableNowForReal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711041306091_OverridingGenreModelIDToByte.cs" />
+    <Compile Include="Migrations\201711041306091_OverridingGenreModelIDToByte.Designer.cs">
+      <DependentUpon>201711041306091_OverridingGenreModelIDToByte.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -421,6 +425,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711041225331_OverridingMovieDateAddedToNotNulableNowForReal.resx">
       <DependentUpon>201711041225331_OverridingMovieDateAddedToNotNulableNowForReal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711041306091_OverridingGenreModelIDToByte.resx">
+      <DependentUpon>201711041306091_OverridingGenreModelIDToByte.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

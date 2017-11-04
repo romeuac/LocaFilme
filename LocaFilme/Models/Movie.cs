@@ -18,7 +18,8 @@ namespace LocaFilme.Models
         public Genre Genre { get; set; }
 
         [Required]
-        public byte GenreId { get; set; }
+        [Display(Name = "Genre")]
+        public int GenreId { get; set; }
 
         [Required]
         [Display(Name = "Release Date")]
@@ -28,6 +29,7 @@ namespace LocaFilme.Models
         [Display(Name = "Number In Stock")]
         public int NumberInStock { get; set; }
 
+        //A linha abaixo estava gerando um valor null sempre que se adicionava novo movie
         //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateAdded { get; set; }
 

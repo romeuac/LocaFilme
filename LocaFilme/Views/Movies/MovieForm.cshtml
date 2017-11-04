@@ -22,7 +22,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.movie.Genre)
+        @Html.LabelFor(m => m.movie.GenreId)
         @Html.DropDownListFor(m => m.movie.GenreId, new SelectList(Model.genres,"Id", "GenreName"), "Select Genre Type", new { @class = "form-control" })
     </div>
 
