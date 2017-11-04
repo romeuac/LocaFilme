@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using LocaFilme.Migrations;
 using System.Web;
 using System.Web.Mvc;
 using LocaFilme.Models;
@@ -68,6 +69,59 @@ namespace LocaFilme.Controllers
 
             return View(movie);
 
+        }
+
+        [Route("Movies/New")]
+        public ActionResult New()
+        {
+            var viewModel = new NewMovieViewModel
+            {
+                //movie = new Movie(),
+                genres = _context.Genres.ToList()
+            };
+            return View("MovieForm", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Movie movie)
+        {
+            movie.DateAdded = DateTime.Now;
+            _context.Movie.Add(movie);
+
+            // Para persistir as mudanças no DB
+            _context.SaveChanges();
+
+            // Volta para a pagina de Index
+            return RedirectToAction("index", "Movies");
+        }
+
+        [Route("Movies/Update")]
+        public ActionResult Update(int id)
+        {
+            var viewModel = new NewMovieViewModel
+            {
+                movie = _context.Movie.Single(m => m.Id == id),
+                genres = _context.Genres.ToList()
+            };
+            return View("Edit", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Save(Movie movie)
+        {
+            var movieInDB = _context.Movie.Single(m => m.Id == movie.Id);
+
+            movieInDB.Name = movie.Name;
+            movieInDB.Genre = movie.Genre;
+            movieInDB.GenreId = movie.GenreId;
+            movieInDB.NumberInStock = movie.NumberInStock;
+            movieInDB.ReleaseDate = movie.ReleaseDate;
+
+            // Para persistir as mudanças no DB
+            _context.SaveChanges();
+
+            // Volta para a pagina de Index
+            return RedirectToAction("index", "Movies");
         }
     }
 }
