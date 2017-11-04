@@ -28,6 +28,7 @@ namespace LocaFilme.Controllers
             var membershipTypes = _context.MembershipTypes.ToList();
             var viewModel = new NewCustomerViewModel
             {
+                Customer = new Customer(),
                 MembershipTypes = membershipTypes
             };
 
@@ -40,6 +41,18 @@ namespace LocaFilme.Controllers
         [HttpPost]
         public ActionResult Save(Customer customer)
         {
+            // Checando se os parametros passados sao validos
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new NewCustomerViewModel
+                {
+                    Customer = customer,
+                    MembershipTypes = _context.MembershipTypes.ToList()
+                };
+
+                return View("CustomerForm", viewModel);
+            }
+
             // New customer
             if (customer.Id == 0)
                 _context.Customer.Add(customer);

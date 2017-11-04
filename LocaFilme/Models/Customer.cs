@@ -27,6 +27,7 @@ namespace LocaFilme.Models
         // Outra alternativa seria utilizar o <label></label> na View, porem teria que setar o Id para esse marcador
         // Caso o nome da propriedade abaixo mudasse, teria de ser mudado o Id tb
         [Display(Name = "Date of Birth")]
+        [Min18YearsIfAMember]
         public DateTime? Birthdate { get; set; }
     }
 }
