@@ -76,23 +76,9 @@ namespace LocaFilme.Controllers
         {
             var viewModel = new NewMovieViewModel
             {
-                //movie = new Movie(),
                 genres = _context.Genres.ToList()
             };
             return View("MovieForm", viewModel);
-        }
-
-        [HttpPost]
-        public ActionResult Create(Movie movie)
-        {
-            movie.DateAdded = DateTime.Now;
-            _context.Movie.Add(movie);
-
-            // Para persistir as mudanças no DB
-            _context.SaveChanges();
-
-            // Volta para a pagina de Index
-            return RedirectToAction("index", "Movies");
         }
 
         [Route("Movies/Update")]
@@ -103,24 +89,47 @@ namespace LocaFilme.Controllers
             if (Movie == null)
                 return HttpNotFound();
 
-            var viewModel = new NewMovieViewModel
+            var viewModel = new NewMovieViewModel(Movie)
             {
-                movie = Movie,
                 genres = _context.Genres.ToList()
             };
-            return View("Edit", viewModel);
+            return View("MovieForm", viewModel);
         }
 
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)
         {
-            var movieInDB = _context.Movie.Single(m => m.Id == movie.Id);
 
-            movieInDB.Name = movie.Name;
-            movieInDB.Genre = movie.Genre;
-            movieInDB.GenreId = movie.GenreId;
-            movieInDB.NumberInStock = movie.NumberInStock;
-            movieInDB.ReleaseDate = movie.ReleaseDate;
+            // Checando se os parametros passados sao validos
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new NewMovieViewModel(movie)
+                {
+                    genres = _context.Genres.ToList()
+                };
+
+                return View("MovieForm", viewModel);
+            }
+
+            // Se trata de um novo movie
+            if (movie.Id == 0)
+            {
+                movie.DateAdded = DateTime.Now;
+                _context.Movie.Add(movie);
+            }
+
+            else
+            {
+                var movieInDB = _context.Movie.Single(m => m.Id == movie.Id);
+
+                movieInDB.Name = movie.Name;
+                movieInDB.Genre = movie.Genre;
+                movieInDB.GenreId = movie.GenreId;
+                movieInDB.NumberInStock = movie.NumberInStock;
+                movieInDB.ReleaseDate = movie.ReleaseDate;
+            }
 
             // Para persistir as mudanças no DB
             _context.SaveChanges();

@@ -42,6 +42,9 @@
 
     @Html.HiddenFor(m => m.Customer.Id);
 
+    // Anti forgery token - para proteger o form e cliente de ser redirecionado de uma pagina maliciosa para esse form, assim a página maliciosa nao podera completar o form em seu nome (pois sua sessao ainda pode estar aberta, por padrao ela fica 20 min aberta depois que o usuario saia da pagina.. mas pode variar
+    @Html.AntiForgeryToken()
+
     //Adicionando o Botao ao Form
     <button type="submit" class="btn btn-primary"> Save </button>
 

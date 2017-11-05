@@ -39,6 +39,7 @@ namespace LocaFilme.Controllers
 
         //Utiliza-se o Post para enviar dados para essa Action, nao o Get, para nao ficar aberto...
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
             // Checando se os parametros passados sao validos
