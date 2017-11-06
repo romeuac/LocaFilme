@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Web.Http;
 
 namespace LocaFilme
 {
@@ -12,6 +13,8 @@ namespace LocaFilme
     {
         protected void Application_Start()
         {
+            // Linha de codigo demandada pelo Readme do API do CustomersController 
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
