@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Http;
+using AutoMapper;
+using LocaFilme.App_Start;
 
 namespace LocaFilme
 {
@@ -13,6 +15,8 @@ namespace LocaFilme
     {
         protected void Application_Start()
         {
+            // Linha para o Automapper - para que seja iniciado quando a aplicacao iniciar
+            Mapper.Initialize(c => c.AddProfile<MappingProfile>());
             // Linha de codigo demandada pelo Readme do API do CustomersController 
             GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();
