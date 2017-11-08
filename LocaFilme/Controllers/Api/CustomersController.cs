@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
+using System.Data.Entity;
 using LocaFilme.Dtos;
 using AutoMapper;
 
@@ -19,10 +20,15 @@ namespace LocaFilme.Controllers.Api
         }
 
         // GET /api/customers
-        public IEnumerable<CustomerDto> GetCustomer()
+        public IHttpActionResult GetCustomer()
         {
             // O Mapper.Map estah sendo utilizado como um delegate e nao sendo executado, O delegate foi possivel pelo uso do System.Linq
-            return _context.Customer.ToList().Select(Mapper.Map<Customer,CustomerDto>);
+            var customerDto = _context.Customer
+                .Include( c => c.MembershipType)
+                .ToList()
+                .Select(Mapper.Map<Customer,CustomerDto>);
+
+            return Ok(customerDto);
         }
 
         // Pegando somente um customer, o GET de 1 

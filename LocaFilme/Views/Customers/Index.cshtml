@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LocaFilme.Models.Customer>
+﻿@*@model IEnumerable<LocaFilme.Models.Customer>*@
 
 @{
     ViewBag.Title = "Customers";
@@ -7,31 +7,83 @@
 
 <h2>Customers</h2>
 
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" id="customers">
 
     <thead>
         <tr>
             <th>Customer</th>
-            <th>Discount Rate</th>
+            @*<th>Discount Rate</th>*@
             <th>Membership Type</th>
+            <th>Delete</th>
         </tr>
     </thead>
 
     <tbody>
-        @foreach (var customer in @Model)
+        @*@foreach (var customer in @Model)
         {
             <tr>
-                @*<td>@Html.ActionLink(customer.Name, "Details", "Customers", new { id = customer.Id }, null)</td>*@
 
-                @*Tornando editavel*@
+
                 <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
                 <td>@customer.MembershipType.DiscountRate%</td>
                 <td>@customer.MembershipType.Name</td>
+                <td><button class="btn-link js-delete" data-customer-id="@customer.Id">Delete</button></td>
             </tr>
-        }
+        }*@
 
         @*<tr><th>@Html.ActionLink("John Smith", "Details", "Customers", new { givenId = 1 }, null)</th></tr>
         <tr><th>@Html.ActionLink("Mary Williams", "Details", "Customers", new { givenId = 2 }, null)</th></tr>*@
     </tbody>
 
 </table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            // Salvando uma ref para a dataTable
+            var table = $("#customers").DataTable({
+                ajax: {
+                    url: "/api/customers",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, customer) {
+                            return "<a href='/customers/edit/" + customer.id + "'>" + customer.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "membershipType.name"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-customer-id='" + data + "'>Delete</button></td>";
+                        }
+                    }
+                ]
+            });
+
+            // O .js-delete estah servindo como um filtro do clique no objeto de Id customers, que eh uma tabela, a ideia eh que tera apenas um handler de clique, pois existe apenas um obj customers. Antes estava sendo colocado um handler para o objeto customers e de classe js-delete, que era todos os botoes.
+            $("#customers").on("click", ".js-delete",function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure you want to delete this customer?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/customers/" + button.attr("data-customer-id"),
+                            method: "DELETE",
+                            success: function () {
+                                //console.log("Success");
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+}

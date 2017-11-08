@@ -6,6 +6,7 @@ using System.Net;
 using System.Web.Http;
 using LocaFilme.Dtos;
 using AutoMapper;
+using System.Data.Entity;
 
 namespace LocaFilme.Controllers.Api
 {
@@ -19,9 +20,14 @@ namespace LocaFilme.Controllers.Api
         }
 
         // GET /api/movies/
-        public  IEnumerable<MovieDto> GetMovie()
+        public  IHttpActionResult GetMovie()
         {
-            return _context.Movie.ToList().Select(Mapper.Map<Movie, MovieDto>);
+            var movieDto =  _context.Movie
+                .Include(m => m.Genre)
+                .ToList()
+                .Select(Mapper.Map<Movie, MovieDto>);
+
+            return Ok(movieDto);
         }
 
         // GET /api/movies/1

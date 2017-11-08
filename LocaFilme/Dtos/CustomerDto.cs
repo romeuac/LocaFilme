@@ -19,6 +19,8 @@ namespace LocaFilme.Dtos
 
         public byte MembershipTypeId { get; set; }
 
+        public MembershipTypeDto MembershipType { get; set; }
+
         // foi comentado pois geraria uma excecao no uso da API com o obj de tipo CustomerDto.. existe uma validacao no Min18.. para tipo ser igual a Customer, e nao o CustomerDto..
         //[Min18YearsIfAMember]
         public DateTime? Birthdate { get; set; }

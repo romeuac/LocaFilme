@@ -55,8 +55,9 @@ namespace LocaFilme.Controllers
         [Route("Movies/Index")]
         public ActionResult Index()
         {
-            var movies = _context.Movie.Include(m => m.Genre).ToList();
-            return View(movies);
+            //var movies = _context.Movie.Include(m => m.Genre).ToList();
+            //return View(movies);
+            return View();
         }
 
         [Route("Movies/Details/{id:range(01,10)}")]
@@ -81,7 +82,7 @@ namespace LocaFilme.Controllers
             return View("MovieForm", viewModel);
         }
 
-        [Route("Movies/Update")]
+        //[Route("Movies/Update/")]
         public ActionResult Update(int id)
         {
             Movie Movie = _context.Movie.Single(m => m.Id == id);
