@@ -18,6 +18,6 @@ namespace LocaFilme.ViewModels
 
         [Required]
         [Display(Name = "Phone")]
-        public string Phone { get; internal set; }
+        public string Phone { get; set; }
     }
 }
