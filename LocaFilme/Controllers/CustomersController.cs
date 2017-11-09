@@ -9,6 +9,8 @@ using LocaFilme.ViewModels;
 
 namespace LocaFilme.Controllers
 {
+    // Com o Authorize abaixo todas as acoes deste controller dependeriam de autenticacao de usuario. Comentei-o pois irei usah-lo globalmente no arquivo App_Start/FilterConfig.cs
+    //[Authorize]
     public class CustomersController : Controller
     {
         private ApplicationDbContext _context;

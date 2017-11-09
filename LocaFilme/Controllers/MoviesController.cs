@@ -55,11 +55,13 @@ namespace LocaFilme.Controllers
         [Route("Movies/Index")]
         public ActionResult Index()
         {
-            //var movies = _context.Movie.Include(m => m.Genre).ToList();
-            //return View(movies);
-            return View();
+            if(User.IsInRole(RoleName.CanManageMovies))
+                return View("List");
+
+            return View("ReadOnlyList");
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         [Route("Movies/Details/{id:range(01,10)}")]
         public ActionResult Details(int id)
         {
@@ -72,6 +74,7 @@ namespace LocaFilme.Controllers
 
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         [Route("Movies/New")]
         public ActionResult New()
         {
@@ -82,6 +85,7 @@ namespace LocaFilme.Controllers
             return View("MovieForm", viewModel);
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         //[Route("Movies/Update/")]
         public ActionResult Update(int id)
         {
@@ -97,7 +101,7 @@ namespace LocaFilme.Controllers
             return View("MovieForm", viewModel);
         }
 
-
+        [Authorize(Roles = RoleName.CanManageMovies)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)

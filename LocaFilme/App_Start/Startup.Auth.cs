@@ -54,9 +54,9 @@ namespace LocaFilme
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "1744822115824168",
+               appSecret: "eee78b5e569d38e3e0fc664f4c9f08ed");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

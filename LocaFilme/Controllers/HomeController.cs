@@ -6,6 +6,8 @@ using System.Web.Mvc;
 
 namespace LocaFilme.Controllers
 {
+    // Permitindo o acesso de usuarios anonimos aa pagina HOME e suas reespectivas acoes
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         public ActionResult Index()
