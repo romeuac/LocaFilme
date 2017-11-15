@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using LocaFilme.Models;
 using LocaFilme.ViewModels;
+using System.Runtime.Caching;
 
 namespace LocaFilme.Controllers
 {
@@ -82,6 +83,14 @@ namespace LocaFilme.Controllers
         [Route("Customers/Index")]
         public ActionResult Index()
         {
+            if(MemoryCache.Default["Genres"] == null)
+            {
+                MemoryCache.Default["Genres"] = _context.Genres.ToList();
+            }
+
+            // Else
+            var genres = MemoryCache.Default["Genres"] as IEnumerable<Genre>;
+
             //var customers = _context.Customer.Include(c => c.MembershipType).ToList();
             //return View(customers);
             return View();
