@@ -20,10 +20,20 @@ namespace LocaFilme.Controllers.Api
         }
 
         // GET /api/movies/
-        public  IHttpActionResult GetMovie()
+        public  IHttpActionResult GetMovie(string query = null)
         {
-            var movieDto =  _context.Movie
-                .Include(m => m.Genre)
+            var moviesQuery = _context.Movie
+                .Include(m => m.Genre);
+
+            // Pegando apenas aquelas que tem a query satisfeita
+            if (!String.IsNullOrWhiteSpace(query))
+            {
+                moviesQuery = moviesQuery.Where(m => m.Name.Contains(query) && m.NumberAvailable > 0);
+
+                //moviesQuery = moviesQuery.Where(m => m.NumberAvailable > 0);
+            }
+
+            var movieDto = moviesQuery
                 .ToList()
                 .Select(Mapper.Map<Movie, MovieDto>);
 

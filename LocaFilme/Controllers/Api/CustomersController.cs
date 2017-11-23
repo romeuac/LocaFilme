@@ -20,11 +20,18 @@ namespace LocaFilme.Controllers.Api
         }
 
         // GET /api/customers
-        public IHttpActionResult GetCustomer()
+        public IHttpActionResult GetCustomer( string query = null)
         {
             // O Mapper.Map estah sendo utilizado como um delegate e nao sendo executado, O delegate foi possivel pelo uso do System.Linq
-            var customerDto = _context.Customer
-                .Include( c => c.MembershipType)
+            var customersQuery = _context.Customer
+                .Include(c => c.MembershipType);
+
+            // Para aparecer na resposta apenas os nomes que possuam o trecho de query (que eh opcional e usado para o caso do typeahed)
+            // Modificamos assim dinamicamente a Query 
+            if (!String.IsNullOrWhiteSpace(query))
+                customersQuery = customersQuery.Where(c => c.Name.Contains(query));
+
+            var customerDto = customersQuery
                 .ToList()
                 .Select(Mapper.Map<Customer,CustomerDto>);
 
