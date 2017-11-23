@@ -13,14 +13,14 @@ button.btn.btn-primary     APERTAR "TAB" NO FINAL*@
     <div class="form-group">
         <label>Customer</label>
         <div class="tt-container">
-            <input id="customer" type="text" value="" class="form-control" />
+            <input id="customer" name="customer" required data-rule-validCutomer="true" type="text" value="" class="form-control" />
         </div>
     </div>
 
     <div class="form-group">
         <label>Movie</label>
         <div class="tt-container">
-            <input id="movie" type="text" value="" class="form-control" />
+            <input id="movie" name="movie" data-rule-noChosenMovies="true" type="text" value="" class="form-control" />
         </div>
 
     <button class="btn btn-primary">Submit</button>
@@ -35,13 +35,16 @@ button.btn.btn-primary     APERTAR "TAB" NO FINAL*@
 
 @section scripts
 {
+    @*Incluindo Jquery Validation*@
+    @Scripts.Render("~/bundles/jqueryval")
+
     <script>
 
         $(document).ready(function () {
 
             // Criando um View model para ser retornado
             var vm = {
-                MovieIds: []                    
+                MovieIds: []
             };
 
             var customers = new Bloodhound({
@@ -57,9 +60,9 @@ button.btn.btn-primary     APERTAR "TAB" NO FINAL*@
                 minLength: 3,
                 highlight: true
             }, {
-                name: 'customers',
-                display: 'name',
-                source: customers
+                    name: 'customers',
+                    display: 'name',
+                    source: customers
                 }).on("typeahead:select", function (e, customer) {
                     vm.CustomerId = customer.id;
                 });
@@ -76,10 +79,12 @@ button.btn.btn-primary     APERTAR "TAB" NO FINAL*@
                 }
             });
 
-            $('#movie').typeahead({
-                minLength: 3,
-                highlight: true
-            }, {
+            $('#movie').typeahead(
+                {
+                    minLength: 3,
+                    highlight: true
+                },
+                {
                     name: 'movies',
                     display: 'name',
                     source: movies
@@ -94,25 +99,47 @@ button.btn.btn-primary     APERTAR "TAB" NO FINAL*@
 
                 });
 
-            $("#newRental").submit(function (e) {
-                console.log("Teste Submit");
+            // CUSTOM VALIDATIONs
+            $.validator.addMethod("validCutomer", function () {
+                return vm.CustomerId && vm.CustomerId !== 0;
+            }, "Please select a valid customer.");
 
-                // Para nao seguir o procedimento padrao de submissao do Form
-                e.preventDefault();
+            $.validator.addMethod("noChosenMovies", function () {
+                return vm.MovieIds.length > 0;
+            }, "Please select at least one movie");
 
-                $.ajax({
-                    url: "/api/newRentals",
-                    method: "post",
-                    data: vm
-                })
-                // Para lidar com SUCCESS and FAILURE
-                .done(function () {
-                    //console.log("Done");
-                    toastr.success("Rental(s) successfully recorded!");
-                })
-                .fail(function () {
-                    toastr.fail("Something unexpected happened..");
-                });
+            // GENERIC VALIDARION - como a do Required que estah para o campo do customer 
+            var validator = $("#newRental").validate({
+                submitHandler: function () {
+                    // Para nao seguir o procedimento padrao de submissao do Form
+                    //e.preventDefault();
+
+                    $.ajax({
+                        url: "/api/newRentals",
+                        method: "post",
+                        data: vm
+                    })
+                    // Para lidar com SUCCESS and FAILURE
+                    .done(function () {
+                        //console.log("Done");
+                        toastr.success("Rental(s) successfully recorded!");
+
+                        // APAGANDO o form quando estah tudo OK
+                        $("#customer").typeahead("val", "");
+                        $("#movie").typeahead("val", "");
+                        $("#movies").empty();
+
+                        vm = { MovieIds : [] };
+
+                        validator.resetForm();
+                    })
+                    .fail(function () {
+                        toastr.fail("Something unexpected happened..");
+                        });
+
+                    // Para impedir a submissao padrao do form
+                    return false;
+                }                    
             });
         });
     </script>    
