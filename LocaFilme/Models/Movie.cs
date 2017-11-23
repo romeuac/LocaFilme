@@ -30,6 +30,9 @@ namespace LocaFilme.Models
         [Display(Name = "Number In Stock")]
         public int NumberInStock { get; set; }
 
+        [Display(Name = "Number Available")]
+        public int NumberAvailable { get; set; }
+
         //A linha abaixo estava gerando um valor null sempre que se adicionava novo movie
         //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateAdded { get; set; }

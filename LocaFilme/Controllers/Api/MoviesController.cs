@@ -51,6 +51,9 @@ namespace LocaFilme.Controllers.Api
 
             var movie = Mapper.Map<MovieDto, Movie>(movieDto);
 
+            // Criei a prop NumberAviable no Dto tb
+            //movie.NumberAvailable = movieDto.NumberInStock;
+
             _context.Movie.Add(movie);
             _context.SaveChanges();
 

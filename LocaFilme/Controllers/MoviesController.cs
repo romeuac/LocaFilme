@@ -122,6 +122,7 @@ namespace LocaFilme.Controllers
             if (movie.Id == 0)
             {
                 movie.DateAdded = DateTime.Now;
+                movie.NumberAvailable = movie.NumberInStock;
                 _context.Movie.Add(movie);
             }
 
@@ -133,6 +134,7 @@ namespace LocaFilme.Controllers
                 movieInDB.Genre = movie.Genre;
                 movieInDB.GenreId = movie.GenreId;
                 movieInDB.NumberInStock = movie.NumberInStock;
+                
                 movieInDB.ReleaseDate = movie.ReleaseDate;
             }
 
