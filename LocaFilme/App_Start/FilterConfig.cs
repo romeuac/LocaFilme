@@ -8,6 +8,7 @@ namespace LocaFilme
         // Sao filtros utilizados para a aplicacao inteira
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            // Esse filtro Lida e renderiza a View de Erros, atuando em todos os controladores e actions 
             filters.Add(new HandleErrorAttribute());
 
             // Adicionando a necessidade de um Login para utilizar toda a aplicacao

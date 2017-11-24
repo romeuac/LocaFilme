@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using LocaFilme.Models;
+using System.Configuration;
 
 namespace LocaFilme
 {
@@ -54,14 +55,24 @@ namespace LocaFilme
             //   consumerKey: "",
             //   consumerSecret: "");
 
+            //app.UseFacebookAuthentication(
+            //   appId: "1744822115824168",
+            //   appSecret: "eee78b5e569d38e3e0fc664f4c9f08ed");
+
             app.UseFacebookAuthentication(
-               appId: "1744822115824168",
-               appSecret: "eee78b5e569d38e3e0fc664f4c9f08ed");
+               appId: ConfigurationManager.AppSettings["FacebookAppId"] ,
+               appSecret: ConfigurationManager.AppSettings["FacebookAppSecret"]);
+
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    ClientId = "643307809926-a5cguat0ogofq8vod29ppj1oi5594o13.apps.googleusercontent.com",
+            //    ClientSecret = "4N56Bq52uMQu7daI9ajGgWNw"
+            //});
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "643307809926-a5cguat0ogofq8vod29ppj1oi5594o13.apps.googleusercontent.com",
-                ClientSecret = "4N56Bq52uMQu7daI9ajGgWNw"
+                ClientId = ConfigurationManager.AppSettings["GoogleClientId"],
+                ClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"]
             });
         }
     }

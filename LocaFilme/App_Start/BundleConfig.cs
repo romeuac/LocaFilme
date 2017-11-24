@@ -48,6 +48,7 @@ namespace LocaFilme
                         "~/content/datatables/css/datatables.bootstrap.css",
                         "~/content/typeahead.css",
                         "~/content/toastr.css",
+                        "~/content/bootstrap-theme.css",
                         "~/Content/site.css"));
         }
     }
